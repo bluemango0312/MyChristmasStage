@@ -21,3 +21,11 @@ export const berlin = localFont({
         }
     ]
 })
+
+export const Cafe24PROUP = localFont({
+    src: [
+        {
+            path: '../public/fonts/Cafe24PROUP.ttf',
+        }
+    ]
+})
