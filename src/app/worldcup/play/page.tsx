@@ -115,13 +115,14 @@ export default function WorldcupPlayPage() {
     }, [roundSize, isThirdPlaceMatch, isFinalMatch]);
 
     useEffect(() => {
-        if (pool.length === 0) return;
-        if (index !== 0) return;
+        if (pool.length !== INITIAL_SIZE) return; // 32강일 때만
+        if (index !== 0) return;                 // 라운드 첫 매치에서만
 
         setShowGuide(true);
         const t = setTimeout(() => setShowGuide(false), 1800);
         return () => clearTimeout(t);
-    }, [pool]);
+    }, [pool, index]);
+
 
     useEffect(() => {
         const run = async () => {
