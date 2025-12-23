@@ -352,6 +352,9 @@ export default function WorldcupResultPage() {
                             w-[clamp(240px,70cqw,320px)]
                             z-50
                         "
+                        style={{
+                            bottom: 'calc(env(safe-area-inset-bottom, 0px) + 20px)',
+                        }}
                     >
                         <button
                             type="button"
