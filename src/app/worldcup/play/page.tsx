@@ -103,9 +103,11 @@ export default function worldcupPlayPage() {
     const right = pool[index + 1];
 
     const roundLabel = useMemo(() => {
-        if (roundSize >= 2) return `${roundSize}강`;
-        return '결승';
+        if (roundSize === 2) return '결승';
+        if (roundSize > 2) return `${roundSize}강`;
+        return '우승';
     }, [roundSize]);
+
 
     useEffect(() => {
         const run = async () => {
@@ -114,7 +116,12 @@ export default function worldcupPlayPage() {
                 const data = (await res.json()) as Stage[];
 
                 const shuffled = [...data].sort(() => Math.random() - 0.5);
-                setPool(shuffled);
+
+                const INITIAL_SIZE = 32;
+                const initialPool =
+                    shuffled.length >= INITIAL_SIZE ? shuffled.slice(0, INITIAL_SIZE) : shuffled;
+
+                setPool(initialPool);
             } finally {
                 setLoading(false);
             }
