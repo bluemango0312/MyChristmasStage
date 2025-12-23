@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { inter } from '@/lib/fonts';
 import { inglesa } from '@/lib/fonts';
@@ -6,28 +8,69 @@ import { Cafe24PROUP } from '@/lib/fonts'
 
 const BG = '/worldcup-bg.png';
 
-function VideoCard({ videoId }: { videoId: string }) {
+function VideoCard({
+    videoId,
+    onPick,
+    label = 'Pick!',
+}: {
+    videoId: string;
+    onPick: () => void;
+    label?: string;
+}) {
     return (
-        <div
-            className="
-            w-full
-            overflow-hidden
-            rounded-xl
-            shadow-[0_16px_40px_rgba(0,0,0,0.35)]
-            "
-        >
-            <div className="relative w-full aspect-video bg-black">
-                <iframe
-                    className="absolute inset-0 h-full w-full"
-                    src={`https://www.youtube.com/embed/${videoId}`}
-                    title="YouTube video player"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                />
+        <div className="w-full">
+            <div className="overflow-hidden rounded-xl shadow-[0_16px_40px_rgba(0,0,0,0.35)]">
+                <div className="relative w-full aspect-video bg-black">
+                    <iframe
+                        className="absolute inset-0 h-full w-full"
+                        src={`https://www.youtube.com/embed/${videoId}`}
+                        title="YouTube"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                    />
+                </div>
             </div>
+
+            <button
+                type="button"
+                onClick={onPick}
+                className="
+                    group
+                    relative
+                    mt-3
+                    w-full
+                    rounded-xl
+                    border-2
+                    border-[#C13939]/70
+                    bg-[#2A0E10]/35
+                    py-1.5
+
+                    text-white/85
+                    text-[clamp(13px,3.7cqw,18px)]
+                    tracking-wide
+
+                    shadow-[0_0_18px_rgba(193,57,57,0.5),inset_0_0_12px_rgba(193,57,57,0.1)]
+                    active:scale-[0.97]
+                    transition
+                "
+            >
+
+                {/* 살짝 떠있는 느낌 */}
+                <span
+                    className="
+                    relative
+                    z-10
+                    drop-shadow-[0_0_6px_rgba(255,255,255,0.6)]
+                    "
+                >
+                    🎄 {label}
+                </span>
+            </button>
+
         </div>
     );
 }
+
 
 export default function worldcupPlayPage() {
     return (
@@ -86,8 +129,16 @@ export default function worldcupPlayPage() {
                     </div>
 
                     {/* Videos */}
-                    <div className="mt-7 w-[clamp(240px,90cqw,340px)] flex flex-col gap-5">
-                        <VideoCard videoId="XyIqFCkrUls" />
+                    <div className="mt-7 w-[clamp(240px,90cqw,340px)] flex flex-col gap-6">
+                        <VideoCard
+                            videoId="XyIqFCkrUls"
+                            label="Pick!"
+                            onPick={() => {
+                                // TODO: 선택 로직 (ex: setWinner(0))
+                                console.log('pick top');
+                            }}
+                        />
+
                         <div className={`
                         ${berlin.className}
                         text-center
@@ -98,31 +149,15 @@ export default function worldcupPlayPage() {
                             VS
                         </div>
 
-                        <VideoCard videoId="XyIqFCkrUls" />
+                        <VideoCard
+                            videoId="XyIqFCkrUls"
+                            label="Pick!"
+                            onPick={() => {
+                                // TODO: 선택 로직 (ex: setWinner(0))
+                                console.log('pick top');
+                            }}
+                        />
                     </div>
-
-                    { /* START 버튼 */}
-                    <Link
-                        href="/worldcup/intro"
-                        className={`
-                            ${inter.className}
-                            mt-auto
-                            rounded-3xl
-                            bg-[#C13939]
-                            border-2
-                            border-[#147529]
-                            px-6 py-1
-                            text-white
-                            font-normal tracking-wide
-                            text-[clamp(10px,5.5cqw,40px)]
-                            shadow-[0_0_30px_0_rgba(20,117,41,1)]
-                            active:scale-95
-                            transition
-                            z-5
-                            `}
-                    >
-                        RESET
-                    </Link>
 
                     <div className="mt-6 text-white/0 select-none">.</div>
                 </div>
