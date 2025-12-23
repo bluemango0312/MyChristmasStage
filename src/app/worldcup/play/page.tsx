@@ -1,10 +1,9 @@
 'use client';
 
-import Link from 'next/link';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Stage } from '../../../lib/worldcup/types';
 import { inter } from '@/lib/fonts';
-import { inglesa, berlin, Cafe24PROUP } from '@/lib/fonts';
+import { berlin, Cafe24PROUP } from '@/lib/fonts';
 import { useRouter } from 'next/navigation';
 
 const BG = '/worldcup-bg.png';
@@ -23,15 +22,14 @@ function VideoCard({
     return (
         <div
             className="
-                rounded-2xl
-                overflow-hidden
-                border
-                border-[#C13939]/25
-                bg-white/5
-                shadow-[0_10px_30px_rgba(0,0,0,0.35),0_0_18px_rgba(193,57,57,0.16)]
-            "
+        rounded-2xl
+        overflow-hidden
+        border
+        border-[#C13939]/25
+        bg-white/5
+        shadow-[0_10px_30px_rgba(0,0,0,0.35),0_0_18px_rgba(193,57,57,0.16)]
+      "
         >
-            {/* 영상 */}
             <div className="relative w-full aspect-video bg-black">
                 <iframe
                     className="absolute inset-0 h-full w-full"
@@ -43,13 +41,11 @@ function VideoCard({
                 <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/20 via-transparent to-black/5" />
             </div>
 
-            {/* 정보 영역 */}
             <div className="px-4 pt-3 pb-2 bg-white/5">
                 <div className="text-white/60 text-[12px] leading-tight truncate">
                     {artist}
                 </div>
 
-                {/* 제목 + 선택 버튼 */}
                 <div className="mt-[-3px] flex items-center gap-3">
                     <div className="flex-1 text-white/90 text-[13px] font-semibold leading-tight truncate">
                         {title}
@@ -59,24 +55,24 @@ function VideoCard({
                         type="button"
                         onClick={onPick}
                         className={`
-                            ${inter.className}
-                            shrink-0
-                            relative -top-[2px]
-                            rounded-lg
-                            border
-                            border-[#C13939]/40
-                            bg-[#2A0E10]/30
-                            px-3
-                            py-1.5
-                            text-[11px]
-                            text-white/85
-                            shadow-[inset_0_0_10px_rgba(193,57,57,0.15)]
-                            hover:bg-[#2A0E10]/40
-                            active:scale-[0.98]
-                            transition
-                        `}
+              ${inter.className}
+              shrink-0
+              relative -top-[2px]
+              rounded-lg
+              border
+              border-[#C13939]/40
+              bg-[#2A0E10]/30
+              px-3
+              py-1.5
+              text-[11px]
+              text-white/85
+              shadow-[inset_0_0_10px_rgba(193,57,57,0.15)]
+              hover:bg-[#2A0E10]/40
+              active:scale-[0.98]
+              transition
+            `}
                     >
-                        🎄 선택하기
+                        선택하기
                     </button>
                 </div>
             </div>
@@ -84,44 +80,60 @@ function VideoCard({
     );
 }
 
-
-
-export default function worldcupPlayPage() {
+export default function WorldcupPlayPage() {
     const router = useRouter();
 
-    // 필요한 상태
-    const [loading, setLoading] = useState(true); // 로딩 중인지
-    const [pool, setPool] = useState<Stage[]>([]); // 현재 라운드에 남아있는 참가자 배열
-    const [index, setIndex] = useState(0); // 현재 매치 위치
-    const [winners, setWinners] = useState<Stage[]>([]); // 이번 라운드 승자 모아두는 배열
+    const INITIAL_SIZE = 32;
 
-    const roundSize = pool.length; //32, 16, 8
-    const matchNo = Math.floor(index / 2) + 1;
-    const totalMatches = Math.max(1, Math.floor(roundSize / 2));
+    const [loading, setLoading] = useState(true);
+    const [pool, setPool] = useState<Stage[]>([]);
+    const [index, setIndex] = useState(0);
+    const [winners, setWinners] = useState<Stage[]>([]);
 
+    const [semiLosers, setSemiLosers] = useState<Stage[]>([]);
+    const [runnerUp, setRunnerUp] = useState<Stage | null>(null);
+    const [isThirdPlaceMatch, setIsThirdPlaceMatch] = useState(false);
+
+    const [finalists, setFinalists] = useState<Stage[]>([]);
+    const [thirdPlace, setThirdPlace] = useState<Stage | null>(null);
+    const [isFinalMatch, setIsFinalMatch] = useState(false);
+
+    const roundSize = pool.length;
     const left = pool[index];
     const right = pool[index + 1];
 
-    const roundLabel = useMemo(() => {
-        if (roundSize === 2) return '결승';
-        if (roundSize > 2) return `${roundSize}강`;
-        return '우승';
-    }, [roundSize]);
+    const matchNo = useMemo(() => Math.floor(index / 2) + 1, [index]);
+    const totalMatches = useMemo(() => Math.max(1, Math.floor(roundSize / 2)), [roundSize]);
 
+    const roundLabel = useMemo(() => {
+        if (isThirdPlaceMatch) return '3·4위전';
+        if (isFinalMatch || roundSize === 2) return '결승';
+        if (roundSize > 2) return `${roundSize}강`;
+        return '결과';
+    }, [roundSize, isThirdPlaceMatch, isFinalMatch]);
 
     useEffect(() => {
         const run = async () => {
             try {
+                sessionStorage.removeItem('worldcup_result');
+                sessionStorage.removeItem('worldcup_top3');
+
                 const res = await fetch('/stages.json', { cache: 'no-store' });
                 const data = (await res.json()) as Stage[];
 
                 const shuffled = [...data].sort(() => Math.random() - 0.5);
-
-                const INITIAL_SIZE = 32;
-                const initialPool =
-                    shuffled.length >= INITIAL_SIZE ? shuffled.slice(0, INITIAL_SIZE) : shuffled;
+                const initialPool = shuffled.length >= INITIAL_SIZE ? shuffled.slice(0, INITIAL_SIZE) : shuffled;
 
                 setPool(initialPool);
+                setIndex(0);
+                setWinners([]);
+                setSemiLosers([]);
+                setRunnerUp(null);
+                setIsThirdPlaceMatch(false);
+                setFinalists([]);
+                setThirdPlace(null);
+                setIsFinalMatch(false);
+
             } finally {
                 setLoading(false);
             }
@@ -131,7 +143,44 @@ export default function worldcupPlayPage() {
     }, []);
 
     const pick = (winner: Stage) => {
-        setWinners((prev) => [...prev, winner]);
+        const currentLeft = pool[index];
+        const currentRight = pool[index + 1];
+        if (!currentLeft || !currentRight) return;
+
+        const loser = currentLeft.id === winner.id ? currentRight : currentLeft;
+
+        // 3·4위전 처리: 승자 = 3등 확정, 그 다음 결승으로 넘어감
+        if (isThirdPlaceMatch) {
+            setThirdPlace(winner);
+
+            setPool(finalists);
+            setIndex(0);
+            setWinners([]);
+            setIsThirdPlaceMatch(false);
+            setIsFinalMatch(true);
+            return;
+        }
+
+        // 결승 처리: top3 저장 후 결과로
+        if (isFinalMatch && roundSize === 2) {
+            const champion = winner;
+            const runnerUpLocal = loser;
+
+            sessionStorage.setItem('worldcup_result', JSON.stringify(champion));
+
+            const t3 = thirdPlace ? [champion, runnerUpLocal, thirdPlace] : [champion, runnerUpLocal];
+            sessionStorage.setItem('worldcup_top3', JSON.stringify(t3.slice(0, 3)));
+
+            router.push('/worldcup/result');
+            return;
+        }
+
+        // 일반 라운드 진행
+        const nextWinners = [...winners, winner];
+        setWinners(nextWinners);
+
+        const nextSemiLosers = pool.length === 4 ? [...semiLosers, loser] : semiLosers;
+        if (pool.length === 4) setSemiLosers(nextSemiLosers);
 
         const nextIndex = index + 2;
 
@@ -140,24 +189,27 @@ export default function worldcupPlayPage() {
             return;
         }
 
-        const nextPool = [...winners, winner];
-
-        if (nextPool.length === 1) {
-            sessionStorage.setItem('worldcup_result', JSON.stringify(nextPool[0]));
-            router.push('/worldcup/result');
+        // 라운드 종료
+        // 4강 종료 시: 결승 진출자 저장 → 3·4위전 먼저 진행
+        if (pool.length === 4) {
+            setFinalists(nextWinners);
+            setPool(nextSemiLosers);
+            setIndex(0);
+            setWinners([]);
+            setIsThirdPlaceMatch(true);
+            setIsFinalMatch(false);
             return;
         }
 
-        setPool(nextPool);
-        setWinners([]);
+        // 나머지 라운드: 승자들로 다음 라운드
+        setPool(nextWinners);
         setIndex(0);
+        setWinners([]);
     };
-
 
 
     return (
         <main className="relative min-h-[100dvh] w-full bg-black">
-            {/* 바깥 배경(모바일: 이미지, PC: 단색) */}
             <img
                 src={BG}
                 alt="background"
@@ -173,7 +225,6 @@ export default function worldcupPlayPage() {
             />
             <div className="absolute inset-0 bg-black/10" style={{ zIndex: 1 }} />
 
-            {/* 폰 프레임 */}
             <div className="relative z-10 mx-auto min-h-[100dvh] w-full overflow-hidden lg:max-w-[390px] [container-type:inline-size]">
                 <img
                     src={BG}
@@ -183,34 +234,31 @@ export default function worldcupPlayPage() {
                 />
                 <div className="absolute inset-0 bg-black/10" style={{ zIndex: 1 }} />
 
-                {/* Content */}
                 <div className="relative z-10 flex min-h-[100dvh] flex-col items-center px-6 pt-12 pb-10">
-                    {/* Title */}
                     <img
-                        src={"/worldcup-logo.png"}
+                        src="/worldcup-logo.png"
                         alt="Christmas Stage World Cup"
                         className="
-                            w-[clamp(200px,83cqw,500px)]
-                            select-none
-                            pointer-events-none
-                            mt-[clamp(10px,5cqw,40px)]
-                        "
+              w-[clamp(200px,83cqw,500px)]
+              select-none
+              pointer-events-none
+              mt-[clamp(10px,5cqw,40px)]
+            "
                     />
-                    {/* 현재 단계 정보 */}
+
                     <div
                         className={`
-                            ${Cafe24PROUP.className}
-                            mt - 6 
-                            text-white/90
-                            text-[clamp(14px,5cqw,25px)]
-                            tracking-wide 
-                        `}
-                        style={{ textShadow: '0px 0px 18px rgba(255,255,255,0.25)', }}
+              ${Cafe24PROUP.className}
+              mt-6
+              text-white/90
+              text-[clamp(14px,5cqw,25px)]
+              tracking-wide
+            `}
+                        style={{ textShadow: '0px 0px 18px rgba(255,255,255,0.25)' }}
                     >
                         {loading ? '불러오는 중…' : `${roundLabel}  ${matchNo}/${totalMatches}`}
                     </div>
 
-                    {/* Videos */}
                     <div className="mt-7 w-[clamp(240px,90cqw,340px)] flex flex-col gap-5">
                         {!loading && left && right ? (
                             <>
@@ -221,13 +269,15 @@ export default function worldcupPlayPage() {
                                     onPick={() => pick(left)}
                                 />
 
-                                <div className={`
-                                    ${berlin.className}
-                                    text-center
-                                    text-white/100
-                                    text-[clamp(22px,5.5cqw,30px)]
-                                    tracking-[0.2em]
-                                    `}>
+                                <div
+                                    className={`
+                    ${berlin.className}
+                    text-center
+                    text-white/100
+                    text-[clamp(22px,5.5cqw,30px)]
+                    tracking-[0.2em]
+                  `}
+                                >
                                     VS
                                 </div>
 
@@ -237,7 +287,6 @@ export default function worldcupPlayPage() {
                                     title={right.title}
                                     onPick={() => pick(right)}
                                 />
-
                             </>
                         ) : null}
                     </div>
@@ -245,6 +294,6 @@ export default function worldcupPlayPage() {
                     <div className="mt-6 text-white/0 select-none">.</div>
                 </div>
             </div>
-        </main >
+        </main>
     );
 }

@@ -50,30 +50,27 @@ export default function WorldcupResultPage() {
     // 최초 진입 시 top3 데이터를 sessionStorage에서 읽고, top3 개수만큼 아이콘 랜덤 생성
     useEffect(() => {
         try {
-            // 1) 진짜 결과(플레이에서 저장한 값) 우선
-            const rawWinner = sessionStorage.getItem('worldcup_result');
-            if (rawWinner) {
-                const winner = JSON.parse(rawWinner) as Stage;
-                const top = [winner].slice(0, 3);
+            const safePickIcons = (n: number) => setIcons(pickIconsRandom(Math.max(0, n)));
 
-                setTop3(top);
-                setIcons(pickIconsRandom(top.length));
-                return;
-            }
-
-            // 2) 없으면 예전 방식(top3) fallback
             const rawTop3 = sessionStorage.getItem('worldcup_top3');
-            if (!rawTop3) {
-                setTop3([]);
-                setIcons([]);
-                return;
-            }
+            const rawWinner = sessionStorage.getItem('worldcup_result');
 
-            const parsed = JSON.parse(rawTop3) as Stage[];
-            const top = parsed.slice(0, 3);
+            const winner = rawWinner ? (JSON.parse(rawWinner) as Stage) : null;
+            const top3 = rawTop3 ? (JSON.parse(rawTop3) as Stage[]) : [];
 
-            setTop3(top);
-            setIcons(pickIconsRandom(top.length));
+            const unique = (arr: Stage[]) => {
+                const map = new Map<string, Stage>();
+                arr.forEach((s) => map.set(s.id, s));
+                return Array.from(map.values());
+            };
+
+            const merged = unique([
+                ...top3,
+                ...(winner ? [winner] : []),
+            ]).slice(0, 3);
+
+            setTop3(merged);
+            safePickIcons(merged.length);
         } catch {
             setTop3([]);
             setIcons([]);
@@ -218,13 +215,13 @@ export default function WorldcupResultPage() {
                                                     <span className="truncate">{s.artist}</span>
                                                 </div>
                                             </div>
-
                                             <img
-                                                src={icons[i]}
+                                                src={icons[i] ?? '/pixel/pixel-1.png'}
                                                 alt="pixel icon"
                                                 className="w-10 h-10"
                                                 style={{ imageRendering: 'pixelated' }}
                                             />
+
                                         </div>
                                     </div>
                                 ))
