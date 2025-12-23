@@ -60,18 +60,6 @@
         "youtubeId": "2JzX21PB5mw"
     },
     {
-        "id": "fromis9_aiwfciy",
-        "title": "All I Want For Christmas Is You",
-        "artist": "fromis_9",
-        "youtubeId": "C5WjG_nc1xU"
-    },
-    {
-        "id": "gayo2021_aiwfciy",
-        "title": "All I Want For Christmas Is You",
-        "artist": "2021 가요대전",
-        "youtubeId": "QyevdJd9jrA"
-    },
-    {
         "id": "nmixx_funky_glitter_christmas",
         "title": "Funky Glitter Christmas",
         "artist": "NMIXX",
@@ -180,18 +168,6 @@
         "youtubeId": "bpMHtWWeJ3M"
     },
     {
-        "id": "exo_unfair",
-        "title": "불공평해",
-        "artist": "EXO",
-        "youtubeId": "DLC-e8c-5xk"
-    },
-    {
-        "id": "bogum_irene_jingle_bell_rock",
-        "title": "Jingle Bell Rock",
-        "artist": "박보검 X 아이린",
-        "youtubeId": "Ycj7q5IKMP8"
-    },
-    {
         "id": "doyoung_winter_2521",
         "title": "스물다섯, 스물하나",
         "artist": "도영 X 윈터",
@@ -208,12 +184,6 @@
         "title": "키싱 유",
         "artist": "NCT WISH",
         "youtubeId": "YqN1p0FXVQo"
-    },
-    {
-        "id": "got7_confession_song",
-        "title": "고백송",
-        "artist": "GOT7",
-        "youtubeId": "hGSIo1grkOA"
     },
     {
         "id": "ateez_white_love",
@@ -258,34 +228,10 @@
         "youtubeId": "PjxPL9s1lTc"
     },
     {
-        "id": "lovelyz_christmas_bell",
-        "title": "종소리 (X-mas Ver.)",
-        "artist": "러블리즈",
-        "youtubeId": "erP8daBhvN4"
-    },
-    {
-        "id": "redvelvet_three_wishes",
-        "title": "세 가지 소원",
-        "artist": "Red Velvet",
-        "youtubeId": "ISpw2ByGWcs"
-    },
-    {
-        "id": "btob_you_can_cry",
-        "title": "울어도 돼",
-        "artist": "BTOB",
-        "youtubeId": "H4JSvr8LeTk"
-    },
-    {
         "id": "tts_dear_santa",
         "title": "Dear Santa",
         "artist": "태티서",
         "youtubeId": "Jq684Fcg2WI"
-    },
-    {
-        "id": "infinite_white_confession",
-        "title": "하얀 고백",
-        "artist": "인피니트",
-        "youtubeId": "MJ85IEvIfEk"
     },
     {
         "id": "kara_christmas_pretty_girl",
@@ -304,53 +250,5 @@
         "title": "Christmas Day",
         "artist": "EXO",
         "youtubeId": "nTVNROa84BU"
-    },
-    {
-        "id": "riize_hug",
-        "title": "Hug",
-        "artist": "RIIZE",
-        "youtubeId": "NA9RpslcCjs"
-    },
-    {
-        "id": "riize_love_119",
-        "title": "Love 119",
-        "artist": "RIIZE",
-        "youtubeId": "11tYWvrP7ic"
-    },
-    {
-        "id": "christmas_because_collab",
-        "title": "크리스마스니까",
-        "artist": "성시경 X 박효신 X 이석훈 X 서인국 X 빅스",
-        "youtubeId": "JkRKxxLiDNI"
-    },
-    {
-        "id": "smtown_candy_happiness",
-        "title": "Candy + 행복",
-        "artist": "SMTOWN",
-        "youtubeId": "syszGTy0Rsw"
-    },
-    {
-        "id": "plave_bbuu",
-        "title": "BBUU!",
-        "artist": "PLAVE",
-        "youtubeId": "HSO6D4F-ljw"
-    },
-    {
-        "id": "plave_merry_pllistmas",
-        "title": "Merry PLLIstmas",
-        "artist": "PLAVE",
-        "youtubeId": "KCT3ZagR9-M"
-    },
-    {
-        "id": "skz_winter_falls_sorikun",
-        "title": "Winter Falls + 소리꾼",
-        "artist": "Stray Kids",
-        "youtubeId": "_iUDLuLqbuk"
-    },
-    {
-        "id": "nctwish_wishful_winter",
-        "title": "Wishful Winter",
-        "artist": "NCT WISH",
-        "youtubeId": "CJusv9BWHcQ"
     }
 ]

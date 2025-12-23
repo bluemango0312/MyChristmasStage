@@ -9,69 +9,81 @@ import { useRouter } from 'next/navigation';
 
 const BG = '/worldcup-bg.png';
 
-
 function VideoCard({
     videoId,
+    artist,
+    title,
     onPick,
-    label = 'Pick!',
 }: {
     videoId: string;
+    artist: string;
+    title: string;
     onPick: () => void;
-    label?: string;
 }) {
     return (
-        <div className="w-full">
-            <div className="overflow-hidden rounded-xl shadow-[0_16px_40px_rgba(0,0,0,0.35)]">
-                <div className="relative w-full aspect-video bg-black">
-                    <iframe
-                        className="absolute inset-0 h-full w-full"
-                        src={`https://www.youtube.com/embed/${videoId}`}
-                        title="YouTube"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowFullScreen
-                    />
-                </div>
+        <div
+            className="
+                rounded-2xl
+                overflow-hidden
+                border
+                border-[#C13939]/25
+                bg-white/5
+                shadow-[0_10px_30px_rgba(0,0,0,0.35),0_0_18px_rgba(193,57,57,0.16)]
+            "
+        >
+            {/* 영상 */}
+            <div className="relative w-full aspect-video bg-black">
+                <iframe
+                    className="absolute inset-0 h-full w-full"
+                    src={`https://www.youtube.com/embed/${videoId}`}
+                    title={`${artist} - ${title}`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                />
+                <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/20 via-transparent to-black/5" />
             </div>
 
-            <button
-                type="button"
-                onClick={onPick}
-                className="
-                    group
-                    relative
-                    mt-3
-                    w-full
-                    rounded-xl
-                    border-2
-                    border-[#C13939]/70
-                    bg-[#2A0E10]/35
-                    py-1.5
+            {/* 정보 영역 */}
+            <div className="px-4 pt-3 pb-2 bg-white/5">
+                <div className="text-white/60 text-[12px] leading-tight truncate">
+                    {artist}
+                </div>
 
-                    text-white/85
-                    text-[clamp(13px,3.7cqw,18px)]
-                    tracking-wide
+                {/* 제목 + 선택 버튼 */}
+                <div className="mt-[-3px] flex items-center gap-3">
+                    <div className="flex-1 text-white/90 text-[13px] font-semibold leading-tight truncate">
+                        {title}
+                    </div>
 
-                    shadow-[0_0_18px_rgba(193,57,57,0.5),inset_0_0_12px_rgba(193,57,57,0.1)]
-                    active:scale-[0.97]
-                    transition
-                "
-            >
-
-                {/* 살짝 떠있는 느낌 */}
-                <span
-                    className="
-                    relative
-                    z-10
-                    drop-shadow-[0_0_6px_rgba(255,255,255,0.6)]
-                    "
-                >
-                    🎄 {label}
-                </span>
-            </button>
-
+                    <button
+                        type="button"
+                        onClick={onPick}
+                        className={`
+                            ${inter.className}
+                            shrink-0
+                            relative -top-[2px]
+                            rounded-lg
+                            border
+                            border-[#C13939]/40
+                            bg-[#2A0E10]/30
+                            px-3
+                            py-1.5
+                            text-[11px]
+                            text-white/85
+                            shadow-[inset_0_0_10px_rgba(193,57,57,0.15)]
+                            hover:bg-[#2A0E10]/40
+                            active:scale-[0.98]
+                            transition
+                        `}
+                    >
+                        🎄 선택하기
+                    </button>
+                </div>
+            </div>
         </div>
     );
 }
+
 
 
 export default function worldcupPlayPage() {
@@ -192,15 +204,16 @@ export default function worldcupPlayPage() {
                     </div>
 
                     {/* Videos */}
-                    <div className="mt-7 w-[clamp(240px,90cqw,340px)] flex flex-col gap-6">
+                    <div className="mt-7 w-[clamp(240px,90cqw,340px)] flex flex-col gap-5">
                         {!loading && left && right ? (
                             <>
                                 <VideoCard
                                     videoId={left.youtubeId}
-                                    onPick={() => {
-                                        pick(left)
-                                    }}
+                                    artist={left.artist}
+                                    title={left.title}
+                                    onPick={() => pick(left)}
                                 />
+
                                 <div className={`
                                     ${berlin.className}
                                     text-center
@@ -213,10 +226,11 @@ export default function worldcupPlayPage() {
 
                                 <VideoCard
                                     videoId={right.youtubeId}
-                                    onPick={() => {
-                                        pick(right)
-                                    }}
+                                    artist={right.artist}
+                                    title={right.title}
+                                    onPick={() => pick(right)}
                                 />
+
                             </>
                         ) : null}
                     </div>
