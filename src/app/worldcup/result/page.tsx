@@ -50,19 +50,29 @@ export default function WorldcupResultPage() {
     // 최초 진입 시 top3 데이터를 sessionStorage에서 읽고, top3 개수만큼 아이콘 랜덤 생성
     useEffect(() => {
         try {
-            const raw = sessionStorage.getItem('worldcup_top3');
-            if (!raw) {
+            // 1) 진짜 결과(플레이에서 저장한 값) 우선
+            const rawWinner = sessionStorage.getItem('worldcup_result');
+            if (rawWinner) {
+                const winner = JSON.parse(rawWinner) as Stage;
+                const top = [winner].slice(0, 3);
+
+                setTop3(top);
+                setIcons(pickIconsRandom(top.length));
+                return;
+            }
+
+            // 2) 없으면 예전 방식(top3) fallback
+            const rawTop3 = sessionStorage.getItem('worldcup_top3');
+            if (!rawTop3) {
                 setTop3([]);
                 setIcons([]);
                 return;
             }
 
-            const parsed = JSON.parse(raw) as Stage[];
+            const parsed = JSON.parse(rawTop3) as Stage[];
             const top = parsed.slice(0, 3);
 
             setTop3(top);
-
-            //아이콘 랜덤 생성
             setIcons(pickIconsRandom(top.length));
         } catch {
             setTop3([]);
@@ -136,6 +146,7 @@ export default function WorldcupResultPage() {
 
     const absUrl = (path: string) =>
         typeof window === 'undefined' ? path : new URL(path, window.location.origin).toString();
+    const isDev = process.env.NODE_ENV !== 'production';
 
     return (
         <main className={`${inter.className} relative min-h-[100dvh] w-full bg-black`}>
@@ -271,25 +282,6 @@ export default function WorldcupResultPage() {
                         </button>
                     </div>
 
-                    <button
-                        type="button"
-                        onClick={injectTestTop3}
-                        className="
-                            mt-4
-                            w-full
-                            rounded-[999px]
-                            border
-                            border-[rgba(255,255,255,0.2)]
-                            bg-[rgba(255,255,255,0.10)]
-                            py-2.5
-                            text-[rgba(255,255,255,0.8)]
-                            text-[14px]
-                            hover:bg-[rgba(255,255,255,0.15)]
-                            transition
-                        "
-                    >
-                        테스트 데이터 넣기
-                    </button>
                 </div>
             </div>
 
