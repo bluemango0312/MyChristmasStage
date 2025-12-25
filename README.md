@@ -56,11 +56,11 @@ https://my-christmas-stage.vercel.app/?v=20251225
 ## 📸 Preview
 **UI 캡쳐**
 <div align="center">
-<img src="https://github.com/user-attachments/assets/36327f9a-f750-4f0d-8b83-e7e0f5d91b9b"width="150" />
-<img src="https://github.com/user-attachments/assets/ce5c14c5-29f2-4c63-83d3-3e72d91cfe30" width="150"/>
-<img src="https://github.com/user-attachments/assets/4d0d7fa4-49bf-491d-a507-3c8d15e7cc0a" width="150"/>
-<img src="https://github.com/user-attachments/assets/11212c0c-1adf-4cbe-b125-56fa7550a83d" width="150"/>
-<img src="https://github.com/user-attachments/assets/0f2c8bc4-80f5-4586-b7f3-d006b211fd1b" width="150"/>
+<img src="https://github.com/user-attachments/assets/36327f9a-f750-4f0d-8b83-e7e0f5d91b9b"width="130" />
+<img src="https://github.com/user-attachments/assets/ce5c14c5-29f2-4c63-83d3-3e72d91cfe30" width="130"/>
+<img src="https://github.com/user-attachments/assets/4d0d7fa4-49bf-491d-a507-3c8d15e7cc0a" width="130"/>
+<img src="https://github.com/user-attachments/assets/11212c0c-1adf-4cbe-b125-56fa7550a83d" width="130"/>
+<img src="https://github.com/user-attachments/assets/0f2c8bc4-80f5-4586-b7f3-d006b211fd1b" width="130"/>
 
 </div>
 
