@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '🎄 My Christmas Stage',
     description: '크리스마스 무대 취향 테스트 결과를 확인해보세요!',
-    url: '/',
+    url: 'https://my-christmas-stage.vercel.app/',
     siteName: 'My Christmas Stage',
     images: [
       {
