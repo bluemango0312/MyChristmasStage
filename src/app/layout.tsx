@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     siteName: 'My Christmas Stage',
     images: [
       {
-        url: '/og-image.png',
+        url: 'https://my-christmas-stage.vercel.app/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'My Christmas Stage',
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '🎄 My Christmas Stage',
     description: '내 크리스마스 무대 취향 테스트 🎶',
-    images: ['/og-image.png'],
+    images: ['https://my-christmas-stage.vercel.app/og-image.jpg'],
   },
 };
 
